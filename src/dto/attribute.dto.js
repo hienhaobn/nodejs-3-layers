@@ -1,13 +1,26 @@
 const AttributeConstant = require('../constants/db.constant');
 
 module.exports = {
-  'infoAttribute': (attributes) => {
-    attributes.map( (attribute) => {
+  'getInfoAttribute': (attributes) => {
+    return attributes.map( (attribute) => {
       AttributeConstant.Attribute.id = attribute._id;
       AttributeConstant.Attribute.name = attribute.name;
-      AttributeConstant.Attribute.created_at = JSON.stringify(attribute.created_at).split('T')[0].split('"')[1];
-      AttributeConstant.Attribute.updated_at = JSON.stringify(attribute.updated_at).split('T')[0].split('"')[1];
+      AttributeConstant.Attribute.created_at = JSON.stringify(attribute.created_at).split('T')[0].split('"')[1]
+      if(!attribute.updated_at) {
+        return "Can't find updated_at";
+      }
+      AttributeConstant.Attribute.updated_at = JSON.stringify(attribute.updated_at).split('T')[0].split('"')[1]
       return AttributeConstant.Attribute;
     });
+  },
+  'getInfoAttibuteById': (attribute) => {
+    AttributeConstant.Attribute.id = attribute._id;
+    AttributeConstant.Attribute.name = attribute.name;
+    AttributeConstant.Attribute.created_at = JSON.stringify(attribute.created_at).split('T')[0].split('"')[1]
+    if(!attribute.updated_at) {
+      return "Can't find updated_at";
+    }
+    AttributeConstant.Attribute.updated_at = JSON.stringify(attribute.updated_at).split('T')[0].split('"')[1]
+    return AttributeConstant.Attribute;
   }
 }

@@ -3,6 +3,7 @@ module.exports = {
     id: 'id',
     name: 'name',
     created_at: 'created_at',
-    updated_at: 'update_at'
-  }
+    updated_at: 'updated_at'
+  },
+  
 }

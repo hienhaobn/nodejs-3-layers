@@ -14,7 +14,7 @@ module.exports = {
       resp.json(AttributeValidate.validateById());
     }
     const attribute = await AttributeService.findAttributeByIdService(id);
-    resp.status(200).json(AttributeValidate.statusSuccess('Find one document from collection Attribute!', attribute));
+    resp.status(200).json(AttributeValidate.statusSuccess('Find a document from collection Attribute!', attribute));
   },
 
   'postAttributeController': async (req, resp) => {

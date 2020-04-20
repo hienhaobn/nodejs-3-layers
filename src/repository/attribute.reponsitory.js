@@ -5,8 +5,12 @@ module.exports = {
   'findAttributesRepository': () => {
     return AttributeEntity.find({});
   },
-  'findAttributeByIdRepository': (id) => {
-    return AttributeEntity.find({_id: id});
+  'findAttributeByIdRepository': async (id) => {
+    const dataAttributeGetById = await AttributeEntity.find({_id: id});
+    if(!dataAttributeGetById) {
+      Validate.validateGetDataFormDatabase('Error find id from database');
+    }
+    return dataAttributeGetById;
   },
   'postAttributeRepository': (body) => {
     let attribute = new AttributeEntity({
@@ -22,18 +26,14 @@ module.exports = {
   'editAttributeRepository': async (id, body) => {
     const dataEditAttribute = await AttributeEntity.findByIdAndUpdate({_id: id}, {$set: {name: body.name, updated_at: Date.now()}}, {new: true})
     if(!dataEditAttribute) {
-      Validate.validateSaveDataToDatabase("Error eidt data form database");
+      Validate.validateSaveDataToDatabase('Error edit data form database');
     }
     return dataEditAttribute;
   },
-  'removeAtributeRepository': (id) => {
-    return AttributeEntity.findByIdAndRemove({_id: id});
-  }
-}
-
-function statusCode(status, message) {
-  return {
-    status,
-    message
+  'removeAtributeRepository': async (id) => {
+    const dataRemoveAttribute = await AttributeEntity.findByIdAndRemove({_id: id});
+    if(!dataRemoveAttribute){
+      Validate.validateGetDataFormDatabase('Error remove data from database');
+    }
   }
 }
