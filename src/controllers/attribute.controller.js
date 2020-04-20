@@ -1,73 +1,46 @@
-const express = require('express');
-
 const AttributeService = require('../services/attribute.service');
 
+const AttributeValidate = require('../helper/validate/attribute.validate');
 module.exports = {
-  'getAttributes': async (req, resp) => {
-    const attributes = await AttributeService.findAttributes();
-    resp.json(statusSuccess('Get all data from colletion Attribute!', attributes));
+
+  'getAttributesController': async (req, resp) => {
+    const attributes = await AttributeService.findAttributesService();
+    resp.json(AttributeValidate.statusSuccess('Get all data from colletion Attribute!', attributes));
   },
-  'getAttribute': async (req, resp) => {
+
+  'getAttributeController': async (req, resp) => {
     let id = req.params.id;
     if (!id) {
-      resp.json(statusGetById());
+      resp.json(AttributeValidate.validateById());
     }
-    const attribute = await AttributeService.findAttributeById(id);
-    if(!attribute) {
-      resp.status(400).json(statusGetDataFail());
-    }
-    resp.status(200).json(statusSuccess('Find one document from collection Attribute!'));
+    const attribute = await AttributeService.findAttributeByIdService(id);
+    resp.status(200).json(AttributeValidate.statusSuccess('Find one document from collection Attribute!', attribute));
   },
-  'postAttribute': async (req, resp) => {
-    if(!req.body) {
-      resp.status(400).json(statusGetDataFail());
-      return;
-    }
-    const attribute = await AttributeService.postAttribute(req.body);
-    if(!attribute) {
-      resp.json(statusGetDataFail());
-      return;
-    }
-    resp.json(attribute);
+
+  'postAttributeController': async (req, resp) => {
+    const attributePost = await AttributeService.postAttributeService(req.body);
+    resp.json(AttributeValidate.statusSuccess('Post a document form client to collection Attribute!', attributePost));
   },
-  'editAttribute': async (req, resp) => {
+
+  'editAttributeController': async (req, resp) => {
     const id = req.params.id;
     let body = req.body;
     if (!id) {
-      resp.json(statusGetById());
+      resp.json(AttributeValidate.validateById());
     }
     if(!body) {
-      resp.json(statusGetBodyFail());
+      resp.json(AttributeValidate.validateDataBody());
     }
-    const attribute = await AttributeService.editAttribute(id, body);
-    if(!attribute) {
-      resp.json(statusGetDataFail());
-    }
-  }
-}
+    const attributeEdit = await AttributeService.editAttributeService(id, body);
+    resp.json(AttributeValidate.statusSuccess(`Edited a record with id = ${id}`, attributeEdit));
+  },
 
-function statusGetDataFail() {
-  return {
-    status: 'fail',
-    message: "Can't get data from database!"
-  }
-}
-function statusGetBodyFail() {
-  return {
-    status: 'fail',
-    message: "Can't get data from request body client!"
-  }
-}
-function statusGetById() {
-  return {
-    status: 'fail',
-    message: "Can't get id from request client!"
-  }
-}
-function statusSuccess(message, data){
-  return {
-    status: 'success',
-    message,
-    data
+  'removeAttributeController': async (req, resp) => {
+    const id = req.params.id;
+    if (!id) {
+      resp.json(AttributeValidate.validateById());
+    }
+    const attributeRemove =  await AttributeService.removeAtributeService(id);
+    return resp.json(AttributeValidate.statusSuccess(`Removed a record with id = ${id}`, attributeRemove));
   }
 }

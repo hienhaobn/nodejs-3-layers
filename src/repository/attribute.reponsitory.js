@@ -1,20 +1,16 @@
 const mongoose = require('mongoose');
 const AttributeEntity = require('../entity/attribute.entity');
-
+const Validate = require('../helper/validate/attribute.validate');
 module.exports = {
-  'findAttributes': () => {
+  'findAttributesRepository': () => {
     return AttributeEntity.find({});
   },
-  'findAttributeById': (id) => {
+  'findAttributeByIdRepository': (id) => {
     return AttributeEntity.find({_id: id});
   },
-  'postAttribute': (body) => {
-    if(!body){
-      return statusCode('fail', "Can't get data")
-    }
+  'postAttributeRepository': (body) => {
     let attribute = new AttributeEntity({
       name: body.name,
-      status: true,
       updated_at: Date.now()
     });
     attribute.save( (error) => {
@@ -23,8 +19,15 @@ module.exports = {
     });
     return attribute;
   },
-  'editAttribute': (id, body) => {
-    
+  'editAttributeRepository': async (id, body) => {
+    const dataEditAttribute = await AttributeEntity.findByIdAndUpdate({_id: id}, {$set: {name: body.name, updated_at: Date.now()}}, {new: true})
+    if(!dataEditAttribute) {
+      Validate.validateSaveDataToDatabase("Error eidt data form database");
+    }
+    return dataEditAttribute;
+  },
+  'removeAtributeRepository': (id) => {
+    return AttributeEntity.findByIdAndRemove({_id: id});
   }
 }
 

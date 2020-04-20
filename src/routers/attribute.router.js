@@ -5,8 +5,9 @@ const AttributeController = require('../controllers/attribute.controller');
 
 const path = '/attribute';
 
-AttributeRouter.get(path, AttributeController.getAttributes)
-AttributeRouter.get(`${path}/:id`, AttributeController.getAttribute)
-AttributeRouter.post(path, AttributeController.postAttribute);
-AttributeRouter.post(`${path}/:id`, AttributeController.editAttribute);
+AttributeRouter.get(path, AttributeController.getAttributesController)
+AttributeRouter.get(`${path}/:id`, AttributeController.getAttributeController)
+AttributeRouter.post(path, AttributeController.postAttributeController);
+AttributeRouter.put(`${path}/:id`, AttributeController.editAttributeController);
+AttributeRouter.delete(`${path}/:id`, AttributeController.removeAttributeController);
 module.exports = AttributeRouter;
