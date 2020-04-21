@@ -1,9 +1,15 @@
 module.exports = {
   'Attribute': {
-    id: 'id',
-    name: 'name',
-    created_at: 'created_at',
-    updated_at: 'updated_at'
+    id: String,
+    name: String,
+    created_at: String,
+    updated_at: String
   },
-  
+  'ProductBrand': {
+    id: String,
+    name: String,
+    status: Boolean,
+    created_at: Date,
+    updated_at: Date
+  }
 }

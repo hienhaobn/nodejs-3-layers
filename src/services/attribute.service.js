@@ -9,8 +9,25 @@ module.exports = {
     if(!attributes) {
       return Validate.validateGetDataFormDatabase();
     }
-    
-    return AttributeDTO.getInfoAttribute(attributes);
+
+    return attributes.map( (attribute) => {
+      let AttributeJson = {
+        id: String,
+        name: String,
+        created_at: String,
+        updated_at: String
+      }
+      AttributeJson.id = attribute._id;
+      AttributeJson.name = attribute.name;
+      AttributeJson.created_at = JSON.stringify(attribute.created_at).split('T')[0].split('"')[1]
+      if(!attribute.updated_at) {
+        return "Can't find updated_at";
+      }
+      AttributeJson.updated_at = JSON.stringify(attribute.updated_at).split('T')[0].split('"')[1]
+      return AttributeJson;
+    });
+    // return AttributeDTO.getInfoAttribute(attributes);
+    // console.log(attributes);
   },
   'findAttributeByIdService': async (id) => {
     const attributes = await AttributeReponsitory.findAttributeByIdRepository(id);
@@ -28,7 +45,7 @@ module.exports = {
       return Validate.validateByDataFromClient("Can't get name from client");
     }
     const dataAttribute = await AttributeReponsitory.postAttributeRepository(body);
-    return AttributeDTO.getInfoAttribute(dataAttribute);
+    return AttributeDTO.getInfoAttibuteById(dataAttribute);
   },
   'editAttributeService': async (id,body) => {
     if(!body){

@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const AttributeEntity = require('../entity/attribute.entity');
 const Validate = require('../helper/validate/attribute.validate');
+
 module.exports = {
-  'findAttributesRepository': () => {
+  'findAttributesRepository': async () => {
     return AttributeEntity.find({});
   },
   'findAttributeByIdRepository': async (id) => {
